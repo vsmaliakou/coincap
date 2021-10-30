@@ -1,7 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Table } from 'antd'
+import { getDataTC } from '../reducers/main-reducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppRootStateType } from '../store'
+import { PackageType } from '../api/coincap-api'
+import { transformationHelper } from './helper'
 
 export const Main = () => {
+  const data = useSelector<AppRootStateType, PackageType[]>(state => state.main.data)
+
+  const dataSource = data.map(item => {
+    return {
+      key: item.id,
+      rank: item.rank,
+      name: item.name,
+      price: '$' + (+item.priceUsd).toFixed(2),
+      marketCap: '$' + transformationHelper(+item.marketCapUsd),
+      vwap: '$' + (+item.vwap24Hr).toFixed(2),
+      supply: transformationHelper(+item.supply),
+      volume: '$' + transformationHelper(+item.volumeUsd24Hr),
+      change: (+item.changePercent24Hr).toFixed(2) + '%'
+    }
+  })
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getDataTC())
+    const timerId = setInterval(() => {
+      dispatch(getDataTC())
+    }, 7000)
+    return () => clearInterval(timerId)
+  }, [dispatch])
+
+
   const colums = [
     {
       title: 'Rank',
@@ -16,18 +48,18 @@ export const Main = () => {
     },
     {
       title: 'Price',
-      dataIndex: 'priceUsd',
-      key: 'priceUsd',
+      dataIndex: 'price',
+      key: 'price',
     },
     {
       title: 'Market Cap',
-      dataIndex: 'marketCapUsd',
-      key: 'marketCapUsd',
+      dataIndex: 'marketCap',
+      key: 'marketCap',
     },
     {
       title: 'VWAP (24Hr)',
-      dataIndex: 'vwap24Hr',
-      key: 'vwap24Hr',
+      dataIndex: 'vwap',
+      key: 'vwap',
     },
     {
       title: 'Supply',
@@ -36,13 +68,13 @@ export const Main = () => {
     },
     {
       title: 'Volume (24Hr)',
-      dataIndex: 'volumeUsd24Hr',
-      key: 'volumeUsd24Hr',
+      dataIndex: 'volume',
+      key: 'volume',
     },
     {
       title: 'Change (24Hr)',
-      dataIndex: 'changePercent24Hr',
-      key: 'changePercent24Hr',
+      dataIndex: 'change',
+      key: 'change',
     },
     {
       title: 'Action',
@@ -51,124 +83,11 @@ export const Main = () => {
       render: (key: any) => <Button key={key}>+</Button>
     },
   ]
-  const data = [
-      {
-        key: '0',
-        id: "bitcoin",
-        rank: "1",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '1',
-        id: "bitcoin",
-        rank: "2",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '2',
-        id: "bitcoin",
-        rank: "3",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '3',
-        id: "bitcoin",
-        rank: "4",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '4',
-        id: "bitcoin",
-        rank: "5",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '5',
-        id: "bitcoin",
-        rank: "6",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '6',
-        id: "bitcoin",
-        rank: "7",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-      {
-        key: '7',
-        id: "bitcoin",
-        rank: "8",
-        symbol: "BTC",
-        name: "Bitcoin",
-        supply: "17193925.0000000000000000",
-        maxSupply: "21000000.0000000000000000",
-        marketCapUsd: "119150835874.4699281625807300",
-        volumeUsd24Hr: "2927959461.1750323310959460",
-        priceUsd: "6929.8217756835584756",
-        changePercent24Hr: "-0.8101417214350335",
-        vwap24Hr: "7175.0663247679233209"
-      },
-    ]
+  
   return (
   <div className="main">
     <div className="app__container">
-      <Table className="main__table" columns={colums} dataSource={data} pagination={false} size="small" />
+      <Table className="main__table" columns={colums} dataSource={dataSource} pagination={false} size="small" />
     </div>
   </div>
   )
