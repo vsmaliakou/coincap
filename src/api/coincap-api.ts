@@ -19,13 +19,18 @@ export type PackageType = {
   vwap24Hr: string
 }
 
+export type ParamsType = {
+  limit: number
+  offset: number
+}
+
 const instance = axios.create({
   baseURL: 'https://api.coincap.io/v2',
  })
 
 export const coincapAPI = {
-   getAssets() {
-       return instance.get<ResponseType>('/assets')
+   getAssets(params: any) {
+       return instance.get<ResponseType>('/assets', params)
    }
 }
 

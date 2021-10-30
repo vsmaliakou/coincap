@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Table } from 'antd'
 import { getDataTC } from '../reducers/main-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../store'
 import { PackageType } from '../api/coincap-api'
-import { transformationHelper } from './helper'
+import { transformationHelper } from './helpers/transformation.helper'
+import { PaginationHelper } from './helpers/pagination.helper'
 
 export const Main = () => {
+  const ITEMS_PER_PAGE = 20;
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  
   const data = useSelector<AppRootStateType, PackageType[]>(state => state.main.data)
+
+  const dispatch = useDispatch()
 
   const dataSource = data.map(item => {
     return {
@@ -23,23 +29,11 @@ export const Main = () => {
     }
   })
 
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(getDataTC())
-    const timerId = setInterval(() => {
-      dispatch(getDataTC())
-    }, 7000)
-    return () => clearInterval(timerId)
-  }, [dispatch])
-
-
-  const colums = [
+  const columns = [
     {
       title: 'Rank',
       dataIndex: 'rank',
       key: 'rank',
-      sorter: (a: any, b: any) => a.rank - b.rank,
     },
     {
       title: 'Name',
@@ -83,11 +77,37 @@ export const Main = () => {
       render: (key: any) => <Button key={key}>+</Button>
     },
   ]
-  
+
+  useEffect(() => {
+    dispatch(getDataTC())
+    const timerId = setInterval(() => {
+      dispatch(getDataTC())
+    }, 7000)
+    return () => clearInterval(timerId)
+  }, [dispatch])
+
+  const reloadCollection = (newParams?: Partial<any>) => {
+    const params: any = { limit: ITEMS_PER_PAGE };
+
+    dispatch(getDataTC({ ...params, ...newParams }));
+  };
+
+  const onChangePage = (limit: number, offset: number, page: number) => {
+    setCurrentPage(page);
+    reloadCollection({ limit, offset });
+  };
+
+  const pagination = PaginationHelper.getListsPagination(
+    onChangePage,
+    ITEMS_PER_PAGE,
+    data.length,
+    currentPage
+  );
+
   return (
   <div className="main">
     <div className="app__container">
-      <Table className="main__table" columns={colums} dataSource={dataSource} pagination={false} size="small" />
+      <Table className="main__table" columns={columns} dataSource={dataSource} pagination={pagination} size="small" />
     </div>
   </div>
   )

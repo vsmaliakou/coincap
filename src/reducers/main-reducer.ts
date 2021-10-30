@@ -1,5 +1,5 @@
 import { Dispatch } from "redux"
-import { coincapAPI, PackageType } from "../api/coincap-api"
+import { coincapAPI, PackageType, ParamsType } from "../api/coincap-api"
 
 export type InitialStateType = typeof initialState
 export type MainActionType = ReturnType<typeof createAssetsAC>
@@ -20,8 +20,8 @@ export const mainReducer = (state = initialState, action: MainActionType): Initi
 
 const createAssetsAC = (data: PackageType[]) => ({type: 'COINCAP/SET-DATA', data} as const)
 
-export const getDataTC = () => (dispatch: Dispatch) => {
-  coincapAPI.getAssets()
+export const getDataTC = (params?: ParamsType) => (dispatch: Dispatch) => {
+  coincapAPI.getAssets(params)
     .then(resolve => {
       dispatch(createAssetsAC(resolve.data.data))
     })
