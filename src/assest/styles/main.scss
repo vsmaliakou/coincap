@@ -1,0 +1,11 @@
+.main {
+  padding: 20px 0;
+  &__table {
+    width: 100%;
+    box-shadow: 0px 2px 15px -3px rgba(0, 0, 0, 40%);
+  }
+  .ant-table-cell {
+    font-size: 14px;
+    font-weight: 100;
+  }
+}
