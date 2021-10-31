@@ -7,10 +7,13 @@ import { CoinType } from '../api/coincap-api'
 import { transformationHelper } from './helpers/transformation.helper'
 import { PaginationHelper } from './helpers/pagination.helper'
 import { useHistory } from 'react-router'
+import { Modal } from './Modal'
 
 export const Main: React.FC = () => {
   const ITEMS_PER_PAGE = 20;
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [currentCoin, setCurrentCoin] = useState<CoinType>();
   
   const coinsCollection = useSelector<AppRootStateType, CoinType[]>(state => state.main.coinsCollection)
 
@@ -27,7 +30,8 @@ export const Main: React.FC = () => {
       vwap: '$' + (+item.vwap24Hr).toFixed(2),
       supply: transformationHelper(+item.supply),
       volume: '$' + transformationHelper(+item.volumeUsd24Hr),
-      change: (+item.changePercent24Hr).toFixed(2) + '%'
+      change: (+item.changePercent24Hr).toFixed(2) + '%',
+      symbol: item.symbol
     }
   })
 
@@ -76,7 +80,7 @@ export const Main: React.FC = () => {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
-      render: (key: any) => <Button key={key}>+</Button>
+      render: (a: any, record: any) => <Button key={record.key} onClick={() => toggle(record)}>+</Button>
     },
   ]
 
@@ -111,6 +115,11 @@ export const Main: React.FC = () => {
     history.push('/details')
   }
 
+  const toggle = (coin?: CoinType) => {
+    setIsClicked(!isClicked)
+    setCurrentCoin(coin)
+  }
+
   return (
   <div className="main">
     <div className="app__container">
@@ -122,11 +131,12 @@ export const Main: React.FC = () => {
         size="small"
         onRow={(record) => {
           return {
-            onClick: () => handleClick(record.key)
+            onDoubleClick: () => handleClick(record.key)
           }
         }}
       />
     </div>
+    {(isClicked && currentCoin) && <Modal currentCoin={currentCoin} toggle={toggle} />}
   </div>
   )
 }

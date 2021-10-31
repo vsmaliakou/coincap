@@ -1,0 +1,77 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  &__container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 60px;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    text-align: start;
+  }
+
+  &__name {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  &__description {
+    margin: 20px 0;
+    display: flex;
+    font-size: 20px;
+
+    & input {
+      margin-left: 10px;
+    }
+  }
+
+  &__btns {
+    margin-top: 60px;
+    display: flex;
+  }
+
+  &__cancel_btn,
+  &__add_btn {
+    width: 100%;
+
+    &.ant-btn {
+      height: 50px;
+      border: none;
+      color: #ffffff;
+      font-size: 20px;
+      text-transform: uppercase;
+    }
+  }
+
+  &__cancel_btn {
+    &.ant-btn {
+      background-color: rgb(255, 0, 0);
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: rgb(255, 92, 92);
+        color: #ffffff;
+      }
+    }
+  }
+
+  &__add_btn {
+    &.ant-btn {
+      background-color: rgb(24, 198, 131);
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: rgb(61, 211, 154);
+        color: #ffffff;
+      }
+    }
+  }
+}
