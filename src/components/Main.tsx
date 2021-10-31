@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Table } from 'antd'
-import { getDataTC } from '../reducers/main-reducer'
+import { getCoinsCollectionTC } from '../reducers/main-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppRootStateType } from '../store'
-import { PackageType } from '../api/coincap-api'
+import { CoinType } from '../api/coincap-api'
 import { transformationHelper } from './helpers/transformation.helper'
 import { PaginationHelper } from './helpers/pagination.helper'
+import { useHistory } from 'react-router'
 
-export const Main = () => {
+export const Main: React.FC = () => {
   const ITEMS_PER_PAGE = 20;
   const [currentPage, setCurrentPage] = useState<number>(1);
   
-  const data = useSelector<AppRootStateType, PackageType[]>(state => state.main.data)
+  const coinsCollection = useSelector<AppRootStateType, CoinType[]>(state => state.main.coinsCollection)
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
-  const dataSource = data.map(item => {
+  const dataSource = coinsCollection.map(item => {
     return {
       key: item.id,
       rank: item.rank,
@@ -79,9 +81,9 @@ export const Main = () => {
   ]
 
   useEffect(() => {
-    dispatch(getDataTC())
+    dispatch(getCoinsCollectionTC())
     const timerId = setInterval(() => {
-      dispatch(getDataTC())
+      dispatch(getCoinsCollectionTC())
     }, 7000)
     return () => clearInterval(timerId)
   }, [dispatch])
@@ -89,7 +91,7 @@ export const Main = () => {
   const reloadCollection = (newParams?: Partial<any>) => {
     const params: any = { limit: ITEMS_PER_PAGE };
 
-    dispatch(getDataTC({ ...params, ...newParams }));
+    dispatch(getCoinsCollectionTC({ ...params, ...newParams }));
   };
 
   const onChangePage = (limit: number, offset: number, page: number) => {
@@ -100,14 +102,30 @@ export const Main = () => {
   const pagination = PaginationHelper.getListsPagination(
     onChangePage,
     ITEMS_PER_PAGE,
-    data.length,
+    coinsCollection.length,
     currentPage
   );
+
+  const handleClick = (id: string) => {
+    localStorage.setItem('coinId', id)
+    history.push('/details')
+  }
 
   return (
   <div className="main">
     <div className="app__container">
-      <Table className="main__table" columns={columns} dataSource={dataSource} pagination={pagination} size="small" />
+      <Table
+        className="main__table"
+        columns={columns}
+        dataSource={dataSource}
+        pagination={pagination}
+        size="small"
+        onRow={(record) => {
+          return {
+            onClick: () => handleClick(record.key)
+          }
+        }}
+      />
     </div>
   </div>
   )
