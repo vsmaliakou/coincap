@@ -1,6 +1,39 @@
 .header {
-  height: 50px;
-  display: flex;
-  align-items: center;
-  background: linear-gradient(to right, rgb(63, 81, 181), rgb(100, 181, 246)) rgb(255, 255, 255);
+  background: linear-gradient(to right, rgb(63, 81, 181), rgb(100, 181, 246))
+    rgb(255, 255, 255);
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 300;
+  }
+
+  &__popular {
+    display: flex;
+
+    &_price {
+      margin: 0 10px;
+    }
+  }
+
+  &__portfolio_wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &__portfolio {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    border: none;
+    background-color: transparent;
+    background-image: url(../icons/portfolio.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    cursor: pointer;
+  }
 }
