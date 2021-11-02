@@ -12,8 +12,9 @@ function App() {
     <div className="app">
       <Header />
       <Switch>
+        <Route exact path='/' render={() => <Main />}/>
         <Route path='/details' render={() => <CoinDetails />}/>
-        <Route path='*' render={() => <Main />}/>
+        <Route path='*' render={() => <div>404</div>}/>
       </Switch>
       <Footer />
     </div>
