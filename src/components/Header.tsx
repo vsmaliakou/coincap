@@ -19,7 +19,10 @@ export const Header: React.FC = () => {
       const costCollection = JSON.parse(data).map((item: any) => {
         return +item.total
       })
-      return costCollection.reduce((acc: number, cur: number) => acc + cur).toFixed(2)
+      const sum = costCollection.reduce((acc: number, cur: number) => acc + cur, 0)
+      return sum.toFixed(2)
+    } else {
+      return 0
     }
   }
 
