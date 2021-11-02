@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/coincap/static/css/main.c839ef2b.chunk.css",
-    "main.js": "/coincap/static/js/main.e249ae4c.chunk.js",
-    "main.js.map": "/coincap/static/js/main.e249ae4c.chunk.js.map",
+    "main.js": "/coincap/static/js/main.f3b89833.chunk.js",
+    "main.js.map": "/coincap/static/js/main.f3b89833.chunk.js.map",
     "runtime-main.js": "/coincap/static/js/runtime-main.a97cf11e.js",
     "runtime-main.js.map": "/coincap/static/js/runtime-main.a97cf11e.js.map",
     "static/css/2.a95be28f.chunk.css": "/coincap/static/css/2.a95be28f.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.a95be28f.chunk.css",
     "static/js/2.5b79b875.chunk.js",
     "static/css/main.c839ef2b.chunk.css",
-    "static/js/main.e249ae4c.chunk.js"
+    "static/js/main.f3b89833.chunk.js"
   ]
 }
